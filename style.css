@@ -1,21 +1,32 @@
 /* ==========================================================================
-   1. RESET & BASE STYLES
+   1. DESIGN TOKENS & RESET
    ========================================================================== */
 
 :root {
-  --bg-color: #f1f5f9;
-  --card-bg: #ffffff;
+  /* Colors */
+  --bg-gradient: linear-gradient(135deg, #e0e7ff 0%, #f1f5f9 50%, #dbeafe 100%);
+  --card-bg: rgba(255, 255, 255, 0.88);
+  --card-border: rgba(255, 255, 255, 0.6);
   --text-main: #0f172a;
   --text-muted: #64748b;
   --primary: #2563eb;
   --primary-hover: #1d4ed8;
-  --border-color: #e2e8f0;
+  --primary-glow: rgba(37, 99, 235, 0.2);
+  --border-color: #cbd5e1;
   --chip-bg: #e2e8f0;
   --chip-hover: #cbd5e1;
+  --chip-text: #334155;
   --danger: #ef4444;
   --danger-hover: #dc2626;
-  --radius: 12px;
-  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+
+  /* Elevation & Geometry */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+  --shadow-lg: 0 20px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
 }
 
 * {
@@ -26,23 +37,27 @@
 
 body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background-color: var(--bg-color);
+  background: var(--bg-gradient);
+  background-attachment: fixed;
   color: var(--text-main);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 40px 16px;
+  padding: 36px 16px;
+  -webkit-font-smoothing: antialiased;
 }
 
 h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 24px;
-  letter-spacing: -0.025em;
+  font-size: 2.1rem;
+  font-weight: 800;
+  margin-bottom: 22px;
+  letter-spacing: -0.03em;
+  color: #1e293b;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
-/* Utility class to show/hide elements */
+/* Utility to toggle elements */
 .hidden {
   display: none !important;
 }
@@ -53,37 +68,106 @@ h1 {
 
 #searchForm {
   display: flex;
-  gap: 8px;
+  flex-direction: column;
+  gap: 10px;
   width: 100%;
   max-width: 440px;
   margin-bottom: 16px;
 }
 
-#searchInput {
+.search-primary-row {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.search-input-wrapper {
+  position: relative;
   flex: 1;
-  padding: 10px 14px;
+}
+
+.search-input-wrapper #searchInput {
+  width: 100%;
+  padding: 12px 16px;
   font-size: 0.95rem;
+  color: var(--text-main);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius);
+  border-radius: var(--radius-md);
   outline: none;
-  background: var(--card-bg);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
-#searchInput:focus {
+.search-input-wrapper #searchInput:focus {
+  background: #ffffff;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  box-shadow: 0 0 0 4px var(--primary-glow);
 }
 
+.search-input-wrapper #searchInput::placeholder {
+  color: var(--text-muted);
+}
+
+/* Suggestions Dropdown */
+.suggestions-list {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  list-style: none;
+  padding: 6px 0;
+  margin: 0;
+  box-shadow: var(--shadow-lg);
+  z-index: 50;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.suggestions-list li {
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.suggestions-list li:hover {
+  background-color: #f1f5f9;
+  color: var(--primary);
+}
+
+.suggestions-list li:not(:last-child) {
+  border-bottom: 1px solid #f1f5f9;
+}
+
+/* Secondary Actions (Locate & Toggle) */
+.form-actions {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.form-actions button {
+  flex: 1;
+}
+
+/* Common Button Base */
 button {
   font-family: inherit;
   font-size: 0.875rem;
   font-weight: 600;
-  border-radius: var(--radius);
+  border-radius: var(--radius-md);
   border: none;
   cursor: pointer;
-  padding: 10px 16px;
-  transition: background-color 0.15s ease, transform 0.05s ease;
+  padding: 11px 16px;
+  transition: background-color 0.2s ease, transform 0.05s ease, box-shadow 0.2s ease;
+  user-select: none;
 }
 
 button:active {
@@ -93,40 +177,51 @@ button:active {
 #searchButton {
   background-color: var(--primary);
   color: #ffffff;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
 }
 
 #searchButton:hover {
   background-color: var(--primary-hover);
+  box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
 }
 
+#locateButton,
 .unit-toggle {
-  background-color: var(--card-bg);
-  color: var(--text-main);
+  background-color: rgba(255, 255, 255, 0.85);
+  color: #334155;
   border: 1px solid var(--border-color);
+  backdrop-filter: blur(6px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: var(--shadow-sm);
 }
 
+#locateButton:hover,
 .unit-toggle:hover {
-  background-color: var(--chip-bg);
+  background-color: #ffffff;
+  border-color: #94a3b8;
+  color: var(--text-main);
 }
 
 /* ==========================================================================
-   3. RECENT SEARCHES
+   3. RECENT SEARCHES CHIPS
    ========================================================================== */
 
 #searchHistory {
   width: 100%;
   max-width: 440px;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
-/* Flex header holding title on the left and Clear on the right */
-#searchHistory > h3 {
+#historyHeading {
   display: inline-block;
-  font-size: 0.825rem;
+  font-size: 0.775rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   color: var(--text-muted);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 #clearHistory {
@@ -137,6 +232,7 @@ button:active {
   font-size: 0.8rem;
   color: var(--danger);
   font-weight: 600;
+  cursor: pointer;
 }
 
 #clearHistory:hover {
@@ -153,36 +249,54 @@ button:active {
 }
 
 #recentChips button {
-  background-color: var(--chip-bg);
-  color: var(--text-main);
-  border: none;
+  background-color: rgba(226, 232, 240, 0.85);
+  color: var(--chip-text);
+  border: 1px solid transparent;
   padding: 6px 14px;
-  border-radius: 9999px; /* Pill shape */
-  font-size: 0.85rem;
-  font-weight: 500;
+  border-radius: var(--radius-full);
+  font-size: 0.825rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
 }
 
 #recentChips button:hover {
-  background-color: var(--chip-hover);
+  background-color: #ffffff;
+  border-color: var(--border-color);
+  color: var(--primary);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
 }
 
 /* ==========================================================================
-   4. FEEDBACK & STATES
+   4. FEEDBACK & MESSAGES
    ========================================================================== */
 
 #errorMessage {
-  color: var(--danger);
-  font-size: 0.9rem;
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
   font-weight: 500;
   margin-bottom: 16px;
   text-align: center;
+  width: 100%;
+  max-width: 440px;
 }
 
 #loadingIndicator {
   color: var(--text-muted);
   font-size: 0.95rem;
+  font-weight: 500;
   margin-bottom: 16px;
   text-align: center;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
 }
 
 /* ==========================================================================
@@ -190,51 +304,78 @@ button:active {
    ========================================================================== */
 
 #weatherCard {
-  background: var(--card-bg);
+  flex: 1;
   width: 100%;
   max-width: 440px;
-  padding: 24px;
-  border-radius: 16px;
-  box-shadow: var(--shadow);
+  min-height: 380px;
+  max-height: 480px;
+  padding: 28px 24px;
+  border-radius: var(--radius-lg);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-lg);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  justify-content: space-between;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 #weatherCard header {
-  margin-bottom: 16px;
+  width: 100%;
 }
 
 #cityName {
-  font-size: 1.4rem;
-  font-weight: 700;
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-main);
 }
 
 #weatherDescription {
   color: var(--text-muted);
-  font-size: 0.95rem;
+  font-size: 1.05rem;
+  font-weight: 500;
   margin-top: 4px;
   text-transform: capitalize;
 }
 
 .weather-main {
+  flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  margin-bottom: 24px;
+  gap: 8px;
+  margin: 12px 0;
 }
 
 #weatherIcon {
-  width: 64px;
-  height: 64px;
+  width: 104px;
+  height: 104px;
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.1));
 }
 
 #temperature {
-  font-size: 3rem;
+  font-size: 4.25rem;
   font-weight: 800;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: #0f172a;
 }
 
 .weather-details {
@@ -243,20 +384,24 @@ button:active {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
-  border-top: 1px solid var(--border-color);
-  padding-top: 18px;
+  border-top: 1px solid rgba(226, 232, 240, 0.9);
+  padding-top: 20px;
 }
 
 .weather-details li {
   font-size: 0.8rem;
+  font-weight: 600;
   color: var(--text-muted);
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
+  background: rgba(241, 245, 249, 0.5);
+  padding: 8px 4px;
+  border-radius: var(--radius-sm);
 }
 
 .weather-details li span {
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: 1.05rem;
+  font-weight: 700;
   color: var(--text-main);
 }

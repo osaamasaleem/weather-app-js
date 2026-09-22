@@ -10,12 +10,21 @@
     <h1>Weather App</h1>
     
     <form action="" id="searchForm">
-        <input type="text"  id="searchInput" placeholder="Enter city name...">
-        <button id="searchButton">Search</button>
+      <div class="search-primary-row">
+          <div class="search-input-wrapper">
+            <input type="text" id="searchInput" placeholder="Enter city name..." autocomplete="off">
+            <!-- Suggestions dropdown sits right here! -->
+            <ul id="suggestionsList" class="suggestions-list hidden"></ul>
+          </div>
+          <button id="searchButton">Search</button>
+      </div>
+
+      <div class="form-actions">
+        <button id="locateButton" type="button" title="Use current location">📍 Locate</button>
         <button id="unitToggle" class="unit-toggle" type="button">Switch to °F</button>
+      </div>
 
     </form>
-    <button id="locateButton">Use Location</button>
 
     <div id="searchHistory" class="hidden">
       <h3 id="historyHeading">Recent Searches</h3>

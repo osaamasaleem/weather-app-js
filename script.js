@@ -27,11 +27,17 @@
 
     const locateButton = document.getElementById("locateButton");
 
+    const suggestionsList = document.getElementById("suggestionsList");
+
     const API_KEY = "e1e1c2d52fc04ab398e155423261809";
     const BASE_URL = "https://api.weatherapi.com/v1/current.json";
 
+    const SEARCH_URL = "https://api.weatherapi.com/v1/search.json"
+
+
     let currentUnit = "C"; // tracks 'C' or 'F'
     let currentWeatherData = null; // stores the fetched JSON so toggling doesn't re-fetch
+    let debounceTimer;
 
 
 
@@ -85,6 +91,54 @@
         }finally{
             loadingIndicator.classList.add("hidden");
         }
+    }
+
+    async function fetchCitySuggestions(query){
+        if(query.trim().length < 2){
+            suggestionsList.classList.add("hidden");
+            suggestionsList.innerHTML = ""
+            return;
+        }
+        try{
+            const url = `${SEARCH_URL}?key=${API_KEY}&q=${encodeURIComponent(query)}`;
+            const response = await fetch(url)
+            if(!response.ok){ return }
+
+            const suggestions = await response.json();
+            renderSuggestions(suggestions);
+
+        }catch(error){
+            console.error("Suggestions error:", error);
+
+        }
+            
+
+
+    }
+
+    function renderSuggestions(suggestions){
+        suggestionsList.innerHTML = "";
+        if(suggestions.length === 0){
+            suggestionsList.classList.add("hidden");
+            return;
+        }
+
+        suggestions.forEach(item=>{
+            const li = document.createElement("li");
+            li.textContent = `${item.name}, ${item.country}`;
+
+            li.addEventListener("click", function(){
+                searchInput.value = item.name;
+                fetchWeather(`${item.name}, ${item.country}`);
+                suggestionsList.classList.add("hidden");
+
+            })
+
+            suggestionsList.append(li);
+        })
+        suggestionsList.classList.remove("hidden");
+
+
     }
 
     function renderWeather(data){
@@ -224,6 +278,8 @@
    
     searchForm.addEventListener("submit", function(e){
         e.preventDefault();
+        clearTimeout(debounceTimer);
+        suggestionsList.classList.add("hidden"); 
         const query = searchInput.value.trim();
         console.log("query:",{query});
         if(query === ""){
@@ -241,6 +297,20 @@
 
     searchInput.addEventListener("input", function(){
         errorMessage.classList.add("hidden");
+
+        clearTimeout(debounceTimer);
+
+        const query = searchInput.value.trim();
+
+        if (query.length < 2) {
+            suggestionsList.innerHTML = "";
+            suggestionsList.classList.add("hidden");
+            return;
+        }
+
+        debounceTimer = setTimeout(() => {
+        fetchCitySuggestions(query);
+    }, 350);
         
 
     })
@@ -284,12 +354,13 @@
         navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
     })
 
-    
 
-    
-
-
-
+    document.addEventListener("click", function(event) {
+    // If the click happened outside the input and outside the suggestions dropdown
+    if (!searchInput.contains(event.target) && !suggestionsList.contains(event.target)) {
+        suggestionsList.classList.add("hidden");
+    }
+    });
 
     // Restore unit preference first
 const savedUnit = loadUnit();
