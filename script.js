@@ -25,11 +25,15 @@
     const historyHeading = document.getElementById("historyHeading");
     const clearHistory = document.getElementById("clearHistory");
 
+    const locateButton = document.getElementById("locateButton");
+
     const API_KEY = "e1e1c2d52fc04ab398e155423261809";
     const BASE_URL = "https://api.weatherapi.com/v1/current.json";
 
     let currentUnit = "C"; // tracks 'C' or 'F'
     let currentWeatherData = null; // stores the fetched JSON so toggling doesn't re-fetch
+
+
 
 /* ==========================================================================
     FUNCTIONS
@@ -177,6 +181,37 @@
         })
     }
 
+    function successCallback(position){
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+
+        const query = `${lat},${lon}`
+        fetchWeather(query);
+    }
+
+    function errorCallback(error){
+        loadingIndicator.classList.add("hidden")
+
+        switch (error.code) {
+        case error.PERMISSION_DENIED:
+            errorMessage.textContent = "Location access denied. Please enable permissions.";
+            break;
+        case error.POSITION_UNAVAILABLE:
+            errorMessage.textContent = "Location information is unavailable.";
+            break;
+        case error.TIMEOUT:
+            errorMessage.textContent = "Location request timed out. Please try again.";
+            break;
+        default:
+            errorMessage.textContent = "An unknown error occurred while getting location.";
+            break;
+        
+    }
+    errorMessage.classList.remove("hidden");
+}
+
+    
+
 
 
    
@@ -235,6 +270,23 @@
         renderRecentCities();
         
     })
+
+    locateButton.addEventListener("click", function(){
+        errorMessage.classList.add("hidden");
+
+        if(!navigator.geolocation){
+            errorMessage.textContent = "Your browser does not support geolocation.";
+            errorMessage.classList.remove("hidden");
+            return;
+        }
+
+        loadingIndicator.classList.remove("hidden");
+        navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+    })
+
+    
+
+    
 
 
 
