@@ -20,6 +20,11 @@
 
     const unitToggle = document.getElementById("unitToggle");
 
+    const searchHistory = document.getElementById("searchHistory");
+    const recentChips = document.getElementById("recentChips");
+    const historyHeading = document.getElementById("historyHeading");
+    const clearHistory = document.getElementById("clearHistory");
+
     const API_KEY = "e1e1c2d52fc04ab398e155423261809";
     const BASE_URL = "https://api.weatherapi.com/v1/current.json";
 
@@ -51,8 +56,10 @@
             currentWeatherData = data;
             renderWeather(data);
             saveData(data);
-            
-            console.log(data)
+            if(!isBackground){
+            addCityToHistory(data.location.name)
+            renderRecentCities()
+            }
 
 
         }
@@ -109,8 +116,6 @@
         return localStorage.getItem("weatherUnit")
     }
 
-
-
     function loadData(){
         const savedData = localStorage.getItem("weatherCity");
 
@@ -119,6 +124,62 @@
         }
         return null;
     }
+
+    function saveRecentCities(cities){
+        localStorage.setItem("weatherRecentCities", JSON.stringify(cities));
+    }
+
+    function loadRecentCities(){
+        const saved = localStorage.getItem("weatherRecentCities");
+        return saved? JSON.parse(saved) : [];
+    }
+
+    function addCityToHistory(city){
+        //load the existing array of cities
+        const cities = loadRecentCities();
+        //now before entering new city into array, check if same one exists already
+        const index = cities.findIndex(item => item.toLowerCase() === city.toLowerCase()) //take the index
+        if(index!== -1){
+            cities.splice(index, 1);
+        }
+
+        cities.unshift(city); // add the new city to the font
+
+        if(cities.length >5){
+            cities.pop();
+
+        }
+        saveRecentCities(cities);
+
+    }
+
+    function renderRecentCities(){
+        recentChips.innerHTML = "";
+        const cities = loadRecentCities();
+        if(cities.length === 0){
+            searchHistory.classList.add("hidden")
+            return;
+        }
+        searchHistory.classList.remove("hidden");
+
+
+
+        cities.forEach(city=>{
+            const cityElement = document.createElement("button");
+            cityElement.type = "button";
+            cityElement.textContent = city;
+            recentChips.append(cityElement)
+
+            cityElement.addEventListener("click", function(){
+                fetchWeather(city);
+                searchInput.value = city;   
+            })  
+        })
+    }
+
+
+
+   
 
     
 
@@ -169,13 +230,26 @@
 
     })
 
+    clearHistory.addEventListener("click", function(){
+        localStorage.removeItem("weatherRecentCities");
+        renderRecentCities();
+        
+    })
+
+
+
+
+    // Restore unit preference first
 const savedUnit = loadUnit();
 if(savedUnit){
     currentUnit = savedUnit;
     unitToggle.textContent = currentUnit === "C" ? "Switch to °F" : "Switch to °C";
 }
 
+// Render search history chips on page load
+renderRecentCities()
 
+// Restore and render cached weather
 const savedData = loadData()  
 if(savedData){
     currentWeatherData = savedData;
