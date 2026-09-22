@@ -1,3 +1,262 @@
-.hidden{
-    display: none;
+/* ==========================================================================
+   1. RESET & BASE STYLES
+   ========================================================================== */
+
+:root {
+  --bg-color: #f1f5f9;
+  --card-bg: #ffffff;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --border-color: #e2e8f0;
+  --chip-bg: #e2e8f0;
+  --chip-hover: #cbd5e1;
+  --danger: #ef4444;
+  --danger-hover: #dc2626;
+  --radius: 12px;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 16px;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  letter-spacing: -0.025em;
+}
+
+/* Utility class to show/hide elements */
+.hidden {
+  display: none !important;
+}
+
+/* ==========================================================================
+   2. SEARCH FORM & CONTROLS
+   ========================================================================== */
+
+#searchForm {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  max-width: 440px;
+  margin-bottom: 16px;
+}
+
+#searchInput {
+  flex: 1;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  outline: none;
+  background: var(--card-bg);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+#searchInput:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+button {
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  padding: 10px 16px;
+  transition: background-color 0.15s ease, transform 0.05s ease;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+#searchButton {
+  background-color: var(--primary);
+  color: #ffffff;
+}
+
+#searchButton:hover {
+  background-color: var(--primary-hover);
+}
+
+.unit-toggle {
+  background-color: var(--card-bg);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+}
+
+.unit-toggle:hover {
+  background-color: var(--chip-bg);
+}
+
+/* ==========================================================================
+   3. RECENT SEARCHES
+   ========================================================================== */
+
+#searchHistory {
+  width: 100%;
+  max-width: 440px;
+  margin-bottom: 20px;
+}
+
+/* Flex header holding title on the left and Clear on the right */
+#searchHistory > h3 {
+  display: inline-block;
+  font-size: 0.825rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+#clearHistory {
+  float: right;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.8rem;
+  color: var(--danger);
+  font-weight: 600;
+}
+
+#clearHistory:hover {
+  color: var(--danger-hover);
+  text-decoration: underline;
+}
+
+#recentChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  clear: both;
+}
+
+#recentChips button {
+  background-color: var(--chip-bg);
+  color: var(--text-main);
+  border: none;
+  padding: 6px 14px;
+  border-radius: 9999px; /* Pill shape */
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+#recentChips button:hover {
+  background-color: var(--chip-hover);
+}
+
+/* ==========================================================================
+   4. FEEDBACK & STATES
+   ========================================================================== */
+
+#errorMessage {
+  color: var(--danger);
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+#loadingIndicator {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+/* ==========================================================================
+   5. WEATHER CARD
+   ========================================================================== */
+
+#weatherCard {
+  background: var(--card-bg);
+  width: 100%;
+  max-width: 440px;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+#weatherCard header {
+  margin-bottom: 16px;
+}
+
+#cityName {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+#weatherDescription {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-top: 4px;
+  text-transform: capitalize;
+}
+
+.weather-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+#weatherIcon {
+  width: 64px;
+  height: 64px;
+}
+
+#temperature {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.weather-details {
+  list-style: none;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  border-top: 1px solid var(--border-color);
+  padding-top: 18px;
+}
+
+.weather-details li {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.weather-details li span {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-main);
 }
