@@ -53,8 +53,9 @@ h1 {
   font-weight: 800;
   margin-bottom: 22px;
   letter-spacing: -0.03em;
-  color: #1e293b;
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+  color: var(--text-main);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  transition: color 0.3s ease;
 }
 
 /* Utility to toggle elements */
@@ -474,4 +475,207 @@ button:active {
   font-weight: 500;
   color: var(--text-muted);
   font-size: 0.8rem;
+}
+
+
+/* TEMP */
+/* ==========================================================================
+   THEME PALETTES & CONTRAST ENGINE
+   ========================================================================== */
+
+body {
+  transition: background 0.6s ease, color 0.3s ease;
+}
+
+/* --------------------------------------------------------------------------
+   1. CLEAR THEMES
+   -------------------------------------------------------------------------- */
+body[data-theme="day-clear"] {
+  --bg-gradient: linear-gradient(135deg, #bae6fd 0%, #7dd3fc 45%, #38bdf8 100%);
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --card-border: rgba(255, 255, 255, 0.8);
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --border-color: #cbd5e1;
+  --chip-bg: rgba(255, 255, 255, 0.85);
+  --chip-text: #1e293b;
+  --chip-border: #cbd5e1;
+  --forecast-tile-bg: rgba(255, 255, 255, 0.7);
+  --forecast-tile-border: rgba(226, 232, 240, 0.9);
+  --forecast-min-color: #64748b;
+  --primary: #0284c7;
+}
+
+body[data-theme="night-clear"] {
+  --bg-gradient: linear-gradient(145deg, #020617 0%, #0f172a 50%, #1e1b4b 100%);
+  --card-bg: rgba(15, 23, 42, 0.85);
+  --card-border: rgba(255, 255, 255, 0.12);
+  --text-main: #f8fafc;
+  --text-muted: #cbd5e1;
+  --border-color: #334155;
+  --chip-bg: #1e293b;
+  --chip-text: #f1f5f9;
+  --chip-border: #334155;
+  --forecast-tile-bg: rgba(30, 41, 59, 0.75);
+  --forecast-tile-border: rgba(255, 255, 255, 0.1);
+  --forecast-min-color: #94a3b8;
+  --primary: #38bdf8;
+}
+
+/* --------------------------------------------------------------------------
+   2. CLOUDY / OVERCAST THEMES
+   -------------------------------------------------------------------------- */
+body[data-theme="day-cloudy"] {
+  --bg-gradient: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 50%, #cbd5e1 100%);
+  --card-bg: rgba(255, 255, 255, 0.94);
+  --card-border: rgba(255, 255, 255, 0.9);
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --border-color: #94a3b8;
+  --chip-bg: #ffffff;
+  --chip-text: #1e293b;
+  --chip-border: #cbd5e1;
+  --forecast-tile-bg: #ffffff;
+  --forecast-tile-border: #cbd5e1;
+  --forecast-min-color: #64748b;
+  --primary: #475569;
+}
+
+body[data-theme="night-cloudy"] {
+  --bg-gradient: linear-gradient(145deg, #090d16 0%, #1e293b 60%, #0f172a 100%);
+  --card-bg: rgba(30, 41, 59, 0.88);
+  --card-border: rgba(255, 255, 255, 0.12);
+  --text-main: #f8fafc;
+  --text-muted: #cbd5e1;
+  --border-color: #475569;
+  --chip-bg: #0f172a;
+  --chip-text: #f1f5f9;
+  --chip-border: #334155;
+  --forecast-tile-bg: rgba(15, 23, 42, 0.7);
+  --forecast-tile-border: rgba(255, 255, 255, 0.1);
+  --forecast-min-color: #94a3b8;
+  --primary: #60a5fa;
+}
+
+/* --------------------------------------------------------------------------
+   3. RAIN / STORMY THEMES
+   -------------------------------------------------------------------------- */
+/* Day Rain: Brightened atmospheric slate so dark text and headings remain crisp */
+body[data-theme="day-rain"] {
+  --bg-gradient: linear-gradient(135deg, #94a3b8 0%, #64748b 50%, #475569 100%);
+  --card-bg: rgba(255, 255, 255, 0.92);
+  --card-border: rgba(255, 255, 255, 0.8);
+  --text-main: #0f172a;
+  --text-muted: #334155;
+  --border-color: #64748b;
+  --chip-bg: rgba(255, 255, 255, 0.9);
+  --chip-text: #0f172a;
+  --chip-border: #cbd5e1;
+  --forecast-tile-bg: rgba(255, 255, 255, 0.8);
+  --forecast-tile-border: rgba(203, 213, 225, 0.8);
+  --forecast-min-color: #475569;
+  --primary: #0284c7;
+}
+
+body[data-theme="night-rain"] {
+  --bg-gradient: linear-gradient(145deg, #020617 0%, #0f172a 45%, #172554 100%);
+  --card-bg: rgba(15, 23, 42, 0.9);
+  --card-border: rgba(96, 165, 250, 0.22);
+  --text-main: #f8fafc;
+  --text-muted: #cbd5e1;
+  --border-color: #334155;
+  --chip-bg: #1e293b;
+  --chip-text: #f8fafc;
+  --chip-border: #334155;
+  --forecast-tile-bg: rgba(30, 41, 59, 0.8);
+  --forecast-tile-border: rgba(96, 165, 250, 0.2);
+  --forecast-min-color: #94a3b8;
+  --primary: #38bdf8;
+}
+
+/* --------------------------------------------------------------------------
+   4. SNOW / ICE THEMES
+   -------------------------------------------------------------------------- */
+body[data-theme="day-snow"] {
+  --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 50%, #bae6fd 100%);
+  --card-bg: rgba(255, 255, 255, 0.92);
+  --card-border: rgba(255, 255, 255, 0.9);
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --border-color: #cbd5e1;
+  --chip-bg: #ffffff;
+  --chip-text: #1e293b;
+  --chip-border: #cbd5e1;
+  --forecast-tile-bg: rgba(255, 255, 255, 0.85);
+  --forecast-tile-border: rgba(226, 232, 240, 0.9);
+  --forecast-min-color: #64748b;
+  --primary: #0284c7;
+}
+
+/* Night Snow: Deep arctic palette with dark glass to avoid white/black clash */
+body[data-theme="night-snow"] {
+  --bg-gradient: linear-gradient(145deg, #0b132b 0%, #1c2541 50%, #1e293b 100%);
+  --card-bg: rgba(15, 23, 42, 0.88);
+  --card-border: rgba(255, 255, 255, 0.15);
+  --text-main: #f8fafc;
+  --text-muted: #cbd5e1;
+  --border-color: #334155;
+  --chip-bg: #1e293b;
+  --chip-text: #f8fafc;
+  --chip-border: #334155;
+  --forecast-tile-bg: rgba(30, 41, 59, 0.8);
+  --forecast-tile-border: rgba(255, 255, 255, 0.12);
+  --forecast-min-color: #94a3b8;
+  --primary: #67e8f9;
+}
+
+
+
+/* Make sure recent search heading uses text-main */
+.recent-searches h3 {
+  color: var(--text-main);
+  opacity: 0.85;
+}
+
+/* Chip style that works for both light and dark modes */
+#recentChips button {
+  background-color: var(--chip-bg);
+  color: var(--chip-text);
+  border: 1px solid var(--chip-border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+#recentChips button:hover {
+  filter: brightness(1.1);
+  border-color: var(--primary);
+}
+
+/* Forecast tiles linked to theme variables */
+.forecast-day {
+  background: var(--forecast-tile-bg);
+  border: 1px solid var(--forecast-tile-border);
+}
+
+.forecast-day .forecast-date {
+  color: var(--text-main);
+}
+
+.forecast-day .forecast-max {
+  color: var(--text-main);
+}
+
+.forecast-day .forecast-min {
+  color: var(--forecast-min-color);
+  font-weight: 600;
+}
+
+/* Ensure night mode input fields match night cards */
+body[data-theme^="night-"] #searchInput {
+  background: rgba(15, 23, 42, 0.85);
+  color: #f8fafc;
+  border-color: #334155;
+}
+
+body[data-theme^="night-"] #searchInput::placeholder {
+  color: #94a3b8;
 }

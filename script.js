@@ -201,6 +201,7 @@
     if (data.forecast && data.forecast.forecastday) {
     renderForecast(data.forecast.forecastday);
 }
+applyWeatherTheme(data)
 
 
 
@@ -309,7 +310,24 @@
     errorMessage.classList.remove("hidden");
 }
 
-    
+    /// TEMP ------------------------------------------------------------------------------------------------------
+    function applyWeatherTheme(data) {
+    const isDay = data.current.is_day === 1;
+    const condition = data.current.condition.text.toLowerCase();
+
+    let theme = isDay ? "day-clear" : "night-clear";
+
+    if (condition.includes("rain") || condition.includes("drizzle") || condition.includes("thunder")) {
+        theme = isDay ? "day-rain" : "night-rain";
+    } else if (condition.includes("cloud") || condition.includes("overcast") || condition.includes("mist") || condition.includes("fog")) {
+        theme = isDay ? "day-cloudy" : "night-cloudy";
+    } else if (condition.includes("snow") || condition.includes("ice") || condition.includes("sleet")) {
+        theme = isDay ? "day-snow" : "night-snow";
+    }
+
+    // Set a data-theme attribute on <body>
+    document.body.setAttribute("data-theme", theme);
+}
 
 
 
