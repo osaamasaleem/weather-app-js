@@ -679,3 +679,11 @@ body[data-theme^="night-"] #searchInput {
 body[data-theme^="night-"] #searchInput::placeholder {
   color: #94a3b8;
 }
+
+/* Keep search input dark and text readable when clicked in night mode */
+body[data-theme^="night-"] #searchInput:focus {
+  background-color: #0f172a;
+  color: #f8fafc;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25);
+}
