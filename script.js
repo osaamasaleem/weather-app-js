@@ -29,10 +29,13 @@
 
     const suggestionsList = document.getElementById("suggestionsList");
 
+    const forecastContainer = document.getElementById("forecastContainer");
+
     const API_KEY = "e1e1c2d52fc04ab398e155423261809";
-    const BASE_URL = "https://api.weatherapi.com/v1/current.json";
+    const BASE_URL = "https://api.weatherapi.com/v1/forecast.json";
 
     const SEARCH_URL = "https://api.weatherapi.com/v1/search.json"
+    
 
 
     let currentUnit = "C"; // tracks 'C' or 'F'
@@ -55,7 +58,7 @@
             errorMessage.classList.add("hidden");
 
 
-            const url = `${BASE_URL}?key=${API_KEY}&q=${encodeURIComponent(city)}`;
+            const url = `${BASE_URL}?key=${API_KEY}&q=${encodeURIComponent(city)}&days=3`;
             const response = await fetch(url);
 
             if(!response.ok){
@@ -69,6 +72,7 @@
             if(!isBackground){
             addCityToHistory(data.location.name)
             renderRecentCities()
+            console.log(data)
             }
 
 
@@ -141,6 +145,43 @@
 
     }
 
+    function renderForecast(forecastDays){
+        forecastContainer.innerHTML = "";
+        forecastDays.forEach((item, index)=>{
+            const dayCard = document.createElement("div")
+            dayCard.className = "forecast-day";
+
+            let dayLabel;
+            if(index === 0){
+                dayLabel = "Today";
+            }else if(index === 1){
+                dayLabel = "Tomorrow";
+            }else{
+                const dateObj = new Date(`${item.date}T00:00:00`);
+                dayLabel = dateObj.toLocaleDateString("en-US", {weekday: "short"})
+            }
+
+            const maxTemp = currentUnit === "C"
+            ? `${Math.round(item.day.maxtemp_c)}°`
+            : `${Math.round(item.day.maxtemp_f)}°`;
+
+            const minTemp = currentUnit === "C"
+            ? `${Math.round(item.day.mintemp_c)}°`
+            : `${Math.round(item.day.mintemp_f)}°`;
+
+            dayCard.innerHTML = `
+                <span class="forecast-date">${dayLabel}</span>
+                <img src="https:${item.day.condition.icon}" alt="${item.day.condition.text}">
+            <div class="forecast-temps">
+                <span class="forecast-max">${maxTemp}</span>
+                <span class="forecast-min">${minTemp}</span>
+            </div>
+        `;
+
+        forecastContainer.append(dayCard);
+        })
+    }
+
     function renderWeather(data){
         weatherCard.classList.remove("hidden");
         errorMessage.classList.add("hidden");
@@ -156,6 +197,10 @@
 
     humidity.textContent = `${data.current.humidity}%`;
     windSpeed.textContent = `${data.current.wind_kph} km/h`;
+
+    if (data.forecast && data.forecast.forecastday) {
+    renderForecast(data.forecast.forecastday);
+}
 
 
 
@@ -324,13 +369,16 @@
         else{
             currentUnit = "C";
             unitToggle.textContent = "Switch to °F"
-        }
+        }   
 
         saveUnit(currentUnit);
 
         if(currentWeatherData){
 
         renderWeather(currentWeatherData)
+        if (currentWeatherData && currentWeatherData.forecast) {
+            renderForecast(currentWeatherData.forecast.forecastday);
+}
         }
 
     })

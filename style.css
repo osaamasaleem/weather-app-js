@@ -298,18 +298,14 @@ button:active {
   0%, 100% { opacity: 0.6; }
   50% { opacity: 1; }
 }
-
 /* ==========================================================================
    5. WEATHER CARD
    ========================================================================== */
 
 #weatherCard {
-  flex: 1;
   width: 100%;
   max-width: 440px;
-  min-height: 380px;
-  max-height: 480px;
-  padding: 28px 24px;
+  padding: 24px 20px 20px;
   border-radius: var(--radius-lg);
   background: var(--card-bg);
   border: 1px solid var(--card-border);
@@ -320,14 +316,14 @@ button:active {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  justify-content: space-between;
+  gap: 14px;
   animation: slideUp 0.3s ease-out;
 }
 
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -340,7 +336,7 @@ button:active {
 }
 
 #cityName {
-  font-size: 1.65rem;
+  font-size: 1.5rem;
   font-weight: 800;
   letter-spacing: -0.02em;
   color: var(--text-main);
@@ -348,60 +344,134 @@ button:active {
 
 #weatherDescription {
   color: var(--text-muted);
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   font-weight: 500;
-  margin-top: 4px;
+  margin-top: 2px;
   text-transform: capitalize;
 }
 
+/* Compact Center Layout */
 .weather-main {
-  flex: 1;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  margin: 12px 0;
+  gap: 16px;
+  margin: 4px 0;
 }
 
 #weatherIcon {
-  width: 104px;
-  height: 104px;
-  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.1));
+  width: 80px;
+  height: 80px;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.08));
 }
 
 #temperature {
-  font-size: 4.25rem;
+  font-size: 3.5rem;
   font-weight: 800;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.03em;
   line-height: 1;
-  color: #0f172a;
+  color: var(--text-main);
 }
 
+/* Refined Stats Row */
 .weather-details {
   list-style: none;
   width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  border-top: 1px solid rgba(226, 232, 240, 0.9);
-  padding-top: 20px;
+  gap: 8px;
+  padding: 12px 0;
+  border-top: 1px solid rgba(226, 232, 240, 0.8);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
 }
 
 .weather-details li {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--text-muted);
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  background: rgba(241, 245, 249, 0.5);
-  padding: 8px 4px;
-  border-radius: var(--radius-sm);
+  gap: 4px;
 }
 
 .weather-details li span {
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--text-main);
+}
+
+/* ==========================================================================
+   6. FORECAST SECTION (Modern Glassmorphism Tiles)
+   ========================================================================== */
+
+.forecast-section {
+  width: 100%;
+  margin-top: 2px;
+}
+
+.forecast-section h3 {
+  font-size: 0.725rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+  font-weight: 700;
+  text-align: left;
+  margin-bottom: 10px;
+  padding-left: 2px;
+}
+
+.forecast-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  width: 100%;
+}
+
+.forecast-day {
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: var(--radius-md);
+  padding: 10px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.forecast-day:hover {
+  background: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.forecast-date {
+  font-size: 0.775rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+.forecast-day img {
+  width: 40px;
+  height: 40px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.06));
+}
+
+.forecast-temps {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 0.85rem;
+}
+
+.forecast-max {
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.forecast-min {
+  font-weight: 500;
+  color: var(--text-muted);
+  font-size: 0.8rem;
 }
